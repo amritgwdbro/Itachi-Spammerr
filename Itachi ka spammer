@@ -1,0 +1,468 @@
+-- [[ 🩸 ITACHI SPAMMER v1 😈 ]] --
+-- Fixed Dark Red Theme | Pure Black Toggle | 0.8s Loading Bar | Delay Box + Start/Stop
+
+local Players = game:GetService("Players")
+local ReplicatedStorage = game:GetService("ReplicatedStorage")
+local TextChatService = game:GetService("TextChatService")
+local TweenService = game:GetService("TweenService")
+
+local player = Players.LocalPlayer
+
+-- ===== RP NAME & BIO SETUP =====
+local RP_NAME = "Itachi Spammer 😈"
+local RP_BIO = "Itachi h8res TMX 😣"
+
+-- ===== LOADING BAR TOP LABEL =====
+local LOADER_TOP_TEXT = "Itachi h8res TMR"
+
+-- ===== AUTO LOAD CHAT MESSAGE (100 @ + MESSAGE) =====
+local LOAD_CHAT_MSG = string.rep("@", 100) .. "[ITACHI SPAMMER LOADED] TO DESTROY YOU💀"
+
+-- ===== PRESETS =====
+local presetsAt = {
+	"[TARGET] TMX MEH ANHALITOR ENGINE  CAR BURST BOOST💀[ITACHI ON TOP]",
+	"[TARGET] TMX MEH ICE TRUCK MOVILE PHONE LAPTOP DEVICE👽 [ITACHI ON TOP]",
+	"[TARGET] TMX MEH HOUSE TREE OAK DRES COMBO CHICKEN BIRYANI TMX MEH😀[ITACHI ON TOP]",
+	"[TARGET] TMX MEH TIME BUS BOMB CAR TRAIN EMGINE HEATER GARAM🔥[ITACHI ON TOP]"
+}
+
+local presetsRoast = {
+	"[Target] TERA SPAM DEKH KE BOTS BHI LOL BOLDE🥀 [ITACHI ON TOP]",
+	"[TARGET] FYTER BANEGA? BOT SEH NIPAT LE PEHLE 🤣 [ITACHI ON TOP]",
+	"[TARGET] DISBANNED HOKAR ABB MAT RONA AMI KE PAS JAKAR 😣[ITACHI ON TOP]",
+	"[TARGET] ITNA MAT BHOOK AGAR BHOOKNA HEIN TOH PAPA BOL 😩[ITACHI ON TOP]",
+	"[TARGET] GAMKO DISBANNED KAREGA MACHAR TOH MARA NI JATA TERESE🤓[ITACHI ON TOP]"
+}
+
+-- ===== FIXED DARK RED PALETTE =====
+local DARK_RED = {
+	bg = Color3.fromRGB(16, 5, 7),
+	card = Color3.fromRGB(32, 9, 13),
+	accent = Color3.fromRGB(215, 20, 42),
+	brightRed = Color3.fromRGB(255, 55, 75),
+	activeBtn = Color3.fromRGB(150, 12, 28),
+	stopBtn = Color3.fromRGB(95, 10, 20),
+	text = Color3.fromRGB(255, 240, 242),
+	subText = Color3.fromRGB(205, 155, 162)
+}
+
+-- ===== GUI SETUP =====
+local gui = Instance.new("ScreenGui")
+gui.Name = "ItachiSpammerV1Gui"
+gui.ResetOnSpawn = false
+gui.DisplayOrder = 999
+gui.Parent = player:WaitForChild("PlayerGui")
+
+local function addCorner(obj, r)
+	local c = Instance.new("UICorner")
+	c.CornerRadius = UDim.new(0, r or 8)
+	c.Parent = obj
+end
+
+local function addStroke(obj, color, thickness)
+	local s = Instance.new("UIStroke")
+	s.Color = color or DARK_RED.accent
+	s.Thickness = thickness or 1.3
+	s.ApplyStrokeMode = Enum.ApplyStrokeMode.Border
+	s.Parent = obj
+end
+
+-- ===== 0.8s LOADING BAR =====
+local loaderFrame = Instance.new("Frame")
+loaderFrame.Name = "ItachiLoader"
+loaderFrame.Size = UDim2.new(0, 360, 0, 108)
+loaderFrame.AnchorPoint = Vector2.new(0.5, 0.5)
+loaderFrame.Position = UDim2.new(0.5, 0, 0.5, 0)
+loaderFrame.BackgroundColor3 = DARK_RED.bg
+loaderFrame.Parent = gui
+addCorner(loaderFrame, 12)
+addStroke(loaderFrame, DARK_RED.accent, 1.8)
+
+local loaderAboveText = Instance.new("TextLabel")
+loaderAboveText.Size = UDim2.new(1, -24, 0, 24)
+loaderAboveText.Position = UDim2.new(0, 12, 0, 12)
+loaderAboveText.BackgroundTransparency = 1
+loaderAboveText.Text = LOADER_TOP_TEXT
+loaderAboveText.Font = Enum.Font.GothamBlack
+loaderAboveText.TextSize = 14
+loaderAboveText.TextColor3 = DARK_RED.brightRed
+loaderAboveText.Parent = loaderFrame
+
+local loaderTrack = Instance.new("Frame")
+loaderTrack.Size = UDim2.new(1, -24, 0, 16)
+loaderTrack.Position = UDim2.new(0, 12, 0, 46)
+loaderTrack.BackgroundColor3 = DARK_RED.card
+loaderTrack.Parent = loaderFrame
+addCorner(loaderTrack, 8)
+addStroke(loaderTrack, DARK_RED.accent, 1.1)
+
+local loaderFill = Instance.new("Frame")
+loaderFill.Size = UDim2.new(0, 0, 1, 0)
+loaderFill.Position = UDim2.new(0, 0, 0, 0)
+loaderFill.BackgroundColor3 = DARK_RED.accent
+loaderFill.Parent = loaderTrack
+addCorner(loaderFill, 8)
+
+local loaderStatus = Instance.new("TextLabel")
+loaderStatus.Size = UDim2.new(1, -24, 0, 18)
+loaderStatus.Position = UDim2.new(0, 12, 0, 72)
+loaderStatus.BackgroundTransparency = 1
+loaderStatus.Text = "Loading ITACHI SPAMMER v1..."
+loaderStatus.Font = Enum.Font.GothamMedium
+loaderStatus.TextSize = 11
+loaderStatus.TextColor3 = DARK_RED.subText
+loaderStatus.Parent = loaderFrame
+
+-- ===== PURE BLACK TOGGLE BUTTON =====
+local toggleBtn = Instance.new("TextButton")
+toggleBtn.Name = "ItachiToggle"
+toggleBtn.Size = UDim2.new(0, 48, 0, 48)
+toggleBtn.Position = UDim2.new(0, 14, 0.5, -24)
+toggleBtn.BackgroundColor3 = Color3.fromRGB(0, 0, 0)
+toggleBtn.Text = "🩸"
+toggleBtn.TextSize = 22
+toggleBtn.Font = Enum.Font.GothamBold
+toggleBtn.TextColor3 = Color3.fromRGB(255, 255, 255)
+toggleBtn.Active = true
+toggleBtn.Draggable = true
+toggleBtn.Visible = false
+toggleBtn.Parent = gui
+addCorner(toggleBtn, 24)
+addStroke(toggleBtn, DARK_RED.accent, 1.6)
+
+-- ===== MAIN MENU (DARK RED THEME ONLY) =====
+local menu = Instance.new("Frame")
+menu.Name = "ItachiMainMenu"
+menu.Size = UDim2.new(0, 390, 0, 395)
+menu.AnchorPoint = Vector2.new(0.5, 0.5)
+menu.Position = UDim2.new(0.5, 0, 0.5, 0)
+menu.BackgroundColor3 = DARK_RED.bg
+menu.Active = true
+menu.Draggable = true
+menu.Visible = false
+menu.Parent = gui
+addCorner(menu, 12)
+addStroke(menu, DARK_RED.accent, 1.8)
+
+-- Title
+local titleLbl = Instance.new("TextLabel")
+titleLbl.Size = UDim2.new(1, -24, 0, 34)
+titleLbl.Position = UDim2.new(0, 12, 0, 8)
+titleLbl.BackgroundTransparency = 1
+titleLbl.Text = "ITACHI SPAMMER v1 😈"
+titleLbl.Font = Enum.Font.GothamBlack
+titleLbl.TextSize = 16
+titleLbl.TextColor3 = DARK_RED.brightRed
+titleLbl.Parent = menu
+
+-- Helper for Target / Count / Delay Boxes
+local function makeBox(placeholder, defaultText, x, y, w, h)
+	local box = Instance.new("TextBox")
+	box.Size = UDim2.new(0, w, 0, h or 30)
+	box.Position = UDim2.new(0, x, 0, y)
+	box.BackgroundColor3 = DARK_RED.card
+	box.PlaceholderText = placeholder
+	box.PlaceholderColor3 = DARK_RED.subText
+	box.Text = defaultText
+	box.TextColor3 = DARK_RED.text
+	box.Font = Enum.Font.GothamMedium
+	box.TextSize = 12
+	box.ClearTextOnFocus = false
+	box.Parent = menu
+	addCorner(box, 7)
+	addStroke(box, DARK_RED.accent, 1.1)
+	return box
+end
+
+-- 4 Target Boxes (2x2 Grid)
+local target1 = makeBox("Target 1", "[TARGET]", 14, 48, 176, 30)
+local target2 = makeBox("Target 2", "", 200, 48, 176, 30)
+local target3 = makeBox("Target 3", "", 14, 84, 176, 30)
+local target4 = makeBox("Target 4", "", 200, 84, 176, 30)
+
+-- Count Box (Already set to 100, editable) & Delay Box
+local countLbl = Instance.new("TextLabel")
+countLbl.Size = UDim2.new(0, 72, 0, 30)
+countLbl.Position = UDim2.new(0, 14, 0, 124)
+countLbl.BackgroundTransparency = 1
+countLbl.Text = "@ COUNT:"
+countLbl.Font = Enum.Font.GothamBold
+countLbl.TextSize = 11
+countLbl.TextColor3 = DARK_RED.text
+countLbl.TextXAlignment = Enum.TextXAlignment.Left
+countLbl.Parent = menu
+
+local countBox = makeBox("100", "100", 88, 124, 98, 30)
+
+local delayLbl = Instance.new("TextLabel")
+delayLbl.Size = UDim2.new(0, 62, 0, 30)
+delayLbl.Position = UDim2.new(0, 198, 0, 124)
+delayLbl.BackgroundTransparency = 1
+delayLbl.Text = "DELAY (s):"
+delayLbl.Font = Enum.Font.GothamBold
+delayLbl.TextSize = 11
+delayLbl.TextColor3 = DARK_RED.text
+delayLbl.TextXAlignment = Enum.TextXAlignment.Left
+delayLbl.Parent = menu
+
+local delayBox = makeBox("1.1", "1.1", 264, 124, 112, 30)
+
+-- 2 Mode Options: @ and ROAST
+local mode = "AT" -- "AT" or "ROAST"
+
+local btnAt = Instance.new("TextButton")
+btnAt.Size = UDim2.new(0, 176, 0, 34)
+btnAt.Position = UDim2.new(0, 14, 0, 166)
+btnAt.Text = "@ MODE"
+btnAt.Font = Enum.Font.GothamBold
+btnAt.TextSize = 12
+btnAt.TextColor3 = DARK_RED.text
+btnAt.BackgroundColor3 = DARK_RED.activeBtn
+btnAt.Parent = menu
+addCorner(btnAt, 7)
+addStroke(btnAt, DARK_RED.accent, 1.2)
+
+local btnRoast = Instance.new("TextButton")
+btnRoast.Size = UDim2.new(0, 176, 0, 34)
+btnRoast.Position = UDim2.new(0, 200, 0, 166)
+btnRoast.Text = "ROAST MODE"
+btnRoast.Font = Enum.Font.GothamBold
+btnRoast.TextSize = 12
+btnRoast.TextColor3 = DARK_RED.text
+btnRoast.BackgroundColor3 = DARK_RED.card
+btnRoast.Parent = menu
+addCorner(btnRoast, 7)
+addStroke(btnRoast, DARK_RED.accent, 1.2)
+
+local function refreshModeUI()
+	if mode == "AT" then
+		btnAt.BackgroundColor3 = DARK_RED.activeBtn
+		btnRoast.BackgroundColor3 = DARK_RED.card
+	else
+		btnAt.BackgroundColor3 = DARK_RED.card
+		btnRoast.BackgroundColor3 = DARK_RED.activeBtn
+	end
+end
+
+btnAt.MouseButton1Click:Connect(function()
+	mode = "AT"
+	refreshModeUI()
+end)
+
+btnRoast.MouseButton1Click:Connect(function()
+	mode = "ROAST"
+	refreshModeUI()
+end)
+
+-- Separate START and STOP Buttons
+local running = false
+
+local startBtn = Instance.new("TextButton")
+startBtn.Size = UDim2.new(0, 176, 0, 38)
+startBtn.Position = UDim2.new(0, 14, 0, 212)
+startBtn.Text = "▶ START"
+startBtn.Font = Enum.Font.GothamBlack
+startBtn.TextSize = 13
+startBtn.TextColor3 = DARK_RED.text
+startBtn.BackgroundColor3 = DARK_RED.activeBtn
+startBtn.Parent = menu
+addCorner(startBtn, 8)
+addStroke(startBtn, DARK_RED.accent, 1.4)
+
+local stopBtn = Instance.new("TextButton")
+stopBtn.Size = UDim2.new(0, 176, 0, 38)
+stopBtn.Position = UDim2.new(0, 200, 0, 212)
+stopBtn.Text = "■ STOP"
+stopBtn.Font = Enum.Font.GothamBlack
+stopBtn.TextSize = 13
+stopBtn.TextColor3 = DARK_RED.text
+stopBtn.BackgroundColor3 = DARK_RED.stopBtn
+stopBtn.Parent = menu
+addCorner(stopBtn, 8)
+addStroke(stopBtn, DARK_RED.accent, 1.4)
+
+-- Status & RP Info
+local statusLbl = Instance.new("TextLabel")
+statusLbl.Size = UDim2.new(1, -28, 0, 22)
+statusLbl.Position = UDim2.new(0, 14, 0, 262)
+statusLbl.BackgroundTransparency = 1
+statusLbl.Text = "Status: Ready | RP: " .. RP_NAME
+statusLbl.Font = Enum.Font.GothamBold
+statusLbl.TextSize = 11
+statusLbl.TextColor3 = DARK_RED.subText
+statusLbl.Parent = menu
+
+local bioLbl = Instance.new("TextLabel")
+bioLbl.Size = UDim2.new(1, -28, 0, 20)
+bioLbl.Position = UDim2.new(0, 14, 0, 286)
+bioLbl.BackgroundTransparency = 1
+bioLbl.Text = "Bio: " .. RP_BIO
+bioLbl.TextWrapped = true
+bioLbl.Font = Enum.Font.GothamMedium
+bioLbl.TextSize = 11
+bioLbl.TextColor3 = DARK_RED.subText
+bioLbl.Parent = menu
+
+-- Footer
+local footerLbl = Instance.new("TextLabel")
+footerLbl.Size = UDim2.new(1, -28, 0, 20)
+footerLbl.Position = UDim2.new(0, 14, 1, -26)
+footerLbl.BackgroundTransparency = 1
+footerLbl.Text = "ITACHI SPAMMER v1 • DARK RED"
+footerLbl.Font = Enum.Font.GothamBold
+footerLbl.TextSize = 10
+footerLbl.TextColor3 = DARK_RED.brightRed
+footerLbl.Parent = menu
+
+-- Toggle Visibility
+toggleBtn.MouseButton1Click:Connect(function()
+	menu.Visible = not menu.Visible
+end)
+
+-- ===== RP NAME & BIO SETTER ON EXECUTE =====
+local function setItachiRP()
+	pcall(function()
+		local reFolder = ReplicatedStorage:FindFirstChild("RE")
+		if reFolder then
+			for _, rem in ipairs(reFolder:GetChildren()) do
+				if rem:IsA("RemoteEvent") then
+					local lower = rem.Name:lower()
+					if lower:find("rpname") or lower:find("name") then
+						pcall(function() rem:FireServer("RolePlayName", RP_NAME) end)
+						pcall(function() rem:FireServer(RP_NAME) end)
+					elseif lower:find("rpbio") or lower:find("bio") then
+						pcall(function() rem:FireServer("RolePlayBio", RP_BIO) end)
+						pcall(function() rem:FireServer(RP_BIO) end)
+					end
+				end
+			end
+		end
+
+		for _, desc in ipairs(ReplicatedStorage:GetDescendants()) do
+			if desc:IsA("RemoteEvent") then
+				local n = desc.Name:lower()
+				if n:find("rpname") or n:find("setname") then
+					pcall(function() desc:FireServer(RP_NAME) end)
+				elseif n:find("rpbio") or n:find("setbio") then
+					pcall(function() desc:FireServer(RP_BIO) end)
+				end
+			end
+		end
+	end)
+end
+
+-- ===== CHAT SEND =====
+local function sendChat(msg)
+	if not msg or msg == "" then return end
+	pcall(function()
+		local channels = TextChatService:FindFirstChild("TextChannels")
+		local general = channels and channels:FindFirstChild("RBXGeneral")
+		if general and general.SendAsync then
+			general:SendAsync(msg)
+			return
+		end
+	end)
+	pcall(function()
+		local legacy = ReplicatedStorage:FindFirstChild("DefaultChatSystemChatEvents")
+			and ReplicatedStorage.DefaultChatSystemChatEvents:FindFirstChild("SayMessageRequest")
+		if legacy then
+			legacy:FireServer(msg, "All")
+		end
+	end)
+end
+
+-- ===== GET ACTIVE TARGETS FROM 4 BOXES =====
+local function getActiveTargets()
+	local list = {}
+	for _, box in ipairs({target1, target2, target3, target4}) do
+		local cleaned = box.Text:match("^%s*(.-)%s*$")
+		if cleaned and cleaned ~= "" then
+			table.insert(list, cleaned)
+		end
+	end
+	if #list == 0 then
+		table.insert(list, "[TARGET]")
+	end
+	return list
+end
+
+-- ===== BUILD MESSAGE =====
+local presetIdx = 1
+local targetIdx = 1
+
+local function buildMessage()
+	local rawCount = tonumber(countBox.Text) or 100
+	local count = math.clamp(math.floor(rawCount), 1, 500)
+	local prefix = string.rep("@", count)
+
+	local pool = (mode == "ROAST") and presetsRoast or presetsAt
+	local line = pool[presetIdx] or pool[1]
+	presetIdx = presetIdx + 1
+	if presetIdx > #pool then
+		presetIdx = 1
+	end
+
+	local targets = getActiveTargets()
+	local chosenTarget = targets[targetIdx] or targets[1]
+	targetIdx = targetIdx + 1
+	if targetIdx > #targets then
+		targetIdx = 1
+	end
+
+	local formatted = line:gsub("%[TARGET%]", chosenTarget):gsub("%[Target%]", chosenTarget)
+	return prefix .. formatted
+end
+
+-- ===== START & STOP LOGIC =====
+startBtn.MouseButton1Click:Connect(function()
+	if running then return end
+	running = true
+	startBtn.BackgroundColor3 = Color3.fromRGB(190, 20, 35)
+	stopBtn.BackgroundColor3 = DARK_RED.stopBtn
+	statusLbl.Text = "Status: Running (" .. mode .. ")..."
+	statusLbl.TextColor3 = DARK_RED.brightRed
+
+	task.spawn(function()
+		while running do
+			sendChat(buildMessage())
+
+			local rawDelay = tonumber(delayBox.Text)
+			local waitTime = rawDelay and math.clamp(rawDelay, 0.1, 10) or 1.1
+
+			local elapsed = 0
+			while running and elapsed < waitTime do
+				task.wait(0.05)
+				elapsed += 0.05
+			end
+		end
+	end)
+end)
+
+stopBtn.MouseButton1Click:Connect(function()
+	running = false
+	startBtn.BackgroundColor3 = DARK_RED.activeBtn
+	stopBtn.BackgroundColor3 = Color3.fromRGB(190, 20, 35)
+	statusLbl.Text = "Status: Stopped"
+	statusLbl.TextColor3 = DARK_RED.subText
+end)
+
+-- Execute hote hi 0.8s loader, RP Name & Bio, aur Load Chat Message
+task.spawn(function()
+	setItachiRP()
+
+	local tw = TweenService:Create(
+		loaderFill,
+		TweenInfo.new(0.8, Enum.EasingStyle.Linear, Enum.EasingDirection.Out),
+		{Size = UDim2.new(1, 0, 1, 0)}
+	)
+	tw:Play()
+	tw.Completed:Wait()
+
+	loaderFrame:Destroy()
+	toggleBtn.Visible = true
+	menu.Visible = true
+
+	setItachiRP()
+	task.wait(0.2)
+	sendChat(LOAD_CHAT_MSG)
+end)
